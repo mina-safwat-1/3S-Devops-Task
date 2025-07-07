@@ -20,7 +20,6 @@ using FSH.Framework.Infrastructure.SecurityHeaders;
 using FSH.Framework.Infrastructure.Storage.Files;
 using FSH.Framework.Infrastructure.Tenant;
 using FSH.Framework.Infrastructure.Tenant.Endpoints;
-using FSH.Starter.Aspire.ServiceDefaults;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
@@ -34,7 +33,7 @@ public static class Extensions
     public static WebApplicationBuilder ConfigureFshFramework(this WebApplicationBuilder builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
-        builder.AddServiceDefaults();
+        // builder.AddServiceDefaults();
         builder.ConfigureSerilog();
         builder.ConfigureDatabase();
         builder.Services.ConfigureMultitenancy();
@@ -76,7 +75,7 @@ public static class Extensions
 
     public static WebApplication UseFshFramework(this WebApplication app)
     {
-        app.MapDefaultEndpoints();
+        // app.MapDefaultEndpoints();
         app.UseRateLimit();
         app.UseSecurityHeaders();
         app.UseMultitenancy();
