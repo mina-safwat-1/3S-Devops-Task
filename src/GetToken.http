@@ -1,10 +1,8 @@
-﻿@Host = https://localhost:7000
-
-POST {{Host}}/api/token/
-Accept: application/json
-Content-Type: application/json
-tenant: root
-{
-  "email":"admin@root.com",
-  "password":"123Pa$$word!"
-}
+﻿curl -X POST http://localhost:8080/api/token \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -H "tenant: root" \
+  -d '{
+    "email": "admin@root.com",
+    "password": "123Pa$$word!"
+  }'

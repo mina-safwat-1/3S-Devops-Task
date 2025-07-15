@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  webapi:
+    image: fsh-webapi
+    container_name: fsh-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DatabaseOptions__ConnectionString: Host=db;Port=5432;Database=postgres-db;Username=postgres;Password=postgres
+      
+
+  db:
+    image: postgres:14
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  postgres_data:
