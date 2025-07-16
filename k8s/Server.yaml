@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapi-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapi
+  template:
+    metadata:
+      labels:
+        app: webapi
+    spec:
+      containers:
+        - name: webapi
+          image: mina1402/3s-task:3
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: ASPNETCORE_ENVIRONMENT
+            - name: DatabaseOptions__ConnectionString
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: DatabaseOptions__ConnectionString
