@@ -1,4 +1,4 @@
-﻿curl -X POST http://localhost:8080/api/token \
+﻿curl -X POST http://localhost:30080/api/token \
   -H "Content-Type: application/json" \
   -H "Accept: application/json" \
   -H "tenant: root" \
