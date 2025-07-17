@@ -68,7 +68,7 @@ docker-compose up --build
 ### ☸️ Kubernetes Deployment
 
 1. **Set up K3s (or your preferred Kubernetes distribution)**
-![K3S](Images/k3s.png)
+![K3S](screenshots/k3s.png)
 
 
 2. **Apply manifests**
@@ -82,7 +82,7 @@ kubectl apply -f k8s/
 ```bash
 kubectl get all
 ```
-![K3S](Images/k8s-resources.png)
+![K3S](screenshots/k8s-resources.png)
 
 ---
 
@@ -102,14 +102,14 @@ You’ll need to:
    * `DOCKER_IMAGE_NAME`
    * `DOCKER_IMAGE_TAG`
 
-![gui of swagger](Images/jenkins_pipeline.png)
+![gui of swagger](screenshots/jenkins_pipeline.png)
 
 ---
 
 ## 📦 Docker Image
 
 * **Image Name**: `mina1402/3s-task`
-![K3S](Images/dockerhub.png)
+![K3S](screenshots/dockerhub.png)
 
 
 
@@ -132,8 +132,8 @@ data:
 ---
 
 ## TESTING
-![check token](Images/k8s-resources.png)
-![gui of swagger](Images/gui.png)
+![check token](screenshots/k8s-resources.png)
+![gui of swagger](screenshots/gui.png)
 
 
 ## 🙌 Author
