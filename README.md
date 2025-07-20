@@ -42,6 +42,10 @@ This repository contains a complete DevOps project designed as part of the 3S De
 * ✅ Persistent Volume Claims for database
 * ✅ Use Kubernetes Secret to keep sensitive data (e.g., db_password)
 * ✅ Local development via Docker Compose (optional)
+* ✅ Helm Chart support for templated, configurable deployments
+* ✅ GitOps-based CD with Argo CD
+* ✅ Automated image tag updates via Argo CD Image Updater
+
 
 ---
 
@@ -54,6 +58,8 @@ This repository contains a complete DevOps project designed as part of the 3S De
 * kubectl
 * Jenkins
 * Git
+* helm
+* argocd + argocd image updater
 
 ---
 
@@ -130,6 +136,33 @@ data:
   POSTGRES_PASSWORD: base64_encoded_password
 ```
 
+## ⚙️ Helm Chart Deployment
+
+This project includes support for deployment via **Helm**, a package manager for Kubernetes that simplifies application deployment and configuration.
+
+### 📁 Helm Chart Structure
+
+```
+my-app/
+  ├── Chart.yaml             # Helm chart metadata
+  ├── values.yaml            # Default configuration values
+  └── templates/             # Kubernetes manifest templates
+      ├── deployment.yaml
+      ├── service.yaml
+      └── secret.yaml
+```
+
+
+### 📋 Helm Values
+
+You can override default values using a custom `values.yaml` file:
+
+```bash
+helm install my-api ./helm/my-api -f custom-values.yaml
+```
+
+
+
 ## 🚀 GitOps (CD)
 
 This project uses **Argo CD** and **Argo CD Image Updater** to implement GitOps for Continuous Delivery.
@@ -191,8 +224,10 @@ spec:
 
 ```
 
+Absolutely! Here's a polished section you can **append to your README** to document your **Helm chart support**, assuming you're packaging your app with Helm:
 
----
+
+
 
 ## TESTING
 ![check token](screenshots/k8s-resources.png)
