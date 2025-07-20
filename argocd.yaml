@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: webapi
+  namespace: argocd
+  annotations:
+    # Argo CD Image Updater settings
+    argocd-image-updater.argoproj.io/image-list: my-image=mina1402/3s-task
+    argocd-image-updater.argoproj.io/my-image.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/my-image.allow-tags: regexp:^v.*
+    argocd-image-updater.argoproj.io/my-image.helm.image-spec: image.spec
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds
+    argocd-image-updater.argoproj.io/write-back-target: helmvalues:/my-app/values.yaml
+    argocd-image-updater.argoproj.io/git-repository: git@github.com:mina-safwat-1/3S-Devops-Task-gitops.git
+    argocd-image-updater.argoproj.io/git-branch: main
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mina-safwat-1/3S-Devops-Task-gitops
+    targetRevision: main
+    path: my-app
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
