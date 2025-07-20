@@ -113,6 +113,7 @@ You’ll need to:
 
 
 
+
 ---
 
 ## 🔐 Secrets & Configurations
@@ -129,6 +130,68 @@ data:
   POSTGRES_PASSWORD: base64_encoded_password
 ```
 
+## 🚀 GitOps (CD)
+
+This project uses **Argo CD** and **Argo CD Image Updater** to implement GitOps for Continuous Delivery.
+
+![gitops-repo](screenshots/gitops-repo.png)
+
+
+### Argo CD Setup
+
+* A separate **GitOps repo** contains Kubernetes manifests watched by Argo CD.
+* Argo CD monitors the GitOps repo and automatically applies updates to the cluster when changes are detected.
+
+![argo-cd](screenshots/argocd.png)
+
+### Argo CD Image Updater
+
+* Automatically detects new image tags pushed to Docker Hub.
+* Updates the container image field in the deployment YAML in the GitOps repo.
+* This change is synced by Argo CD, redeploying the updated app.
+
+![argocd-image-updater](screenshots/argocd-image-updater.png)
+
+#### Argo CD `Application`:
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: webapi
+  namespace: argocd
+  annotations:
+    # Argo CD Image Updater settings
+    argocd-image-updater.argoproj.io/image-list: my-image=mina1402/3s-task
+    argocd-image-updater.argoproj.io/my-image.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/my-image.allow-tags: regexp:^v.*
+    argocd-image-updater.argoproj.io/my-image.helm.image-spec: image.spec
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds
+    argocd-image-updater.argoproj.io/write-back-target: helmvalues:/my-app/values.yaml
+    argocd-image-updater.argoproj.io/git-repository: git@github.com:mina-safwat-1/3S-Devops-Task-gitops.git
+    argocd-image-updater.argoproj.io/git-branch: main
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mina-safwat-1/3S-Devops-Task-gitops
+    targetRevision: main
+    path: my-app
+    helm:
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+```
+
+
 ---
 
 ## TESTING
@@ -142,3 +205,5 @@ data:
 [GitHub Profile](https://github.com/mina-safwat-1)
 
 ---
+
+
